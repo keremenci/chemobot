@@ -6,7 +6,7 @@ import asyncio
 from discord.ext import commands
 
 path = r'C:\Users\Keremenci\Desktop\Chemobot\.env'
-TOKEN = 'NzI2OTIzNDA5NjQ0MTkxNzk0.XwSkdA.soA1OKrNC5ckjXjub1t67BYwjGg'
+TOKEN = os.getenv("DISCORD_TOKEN")
 sallaniyor = False
 playing = False
 
