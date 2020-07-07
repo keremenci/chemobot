@@ -99,22 +99,5 @@ async def spam(ctx, user: discord.User, n: int, *,message=None):
     for i in range(n):
         await user.send(message)
     await ctx.message.delete()
-    
-@client.event
-async def on_voice_state_update(member,before,after):
-    #channel = client.get_channel(CHANNEL_LOL_GENEL)
-    #if before.channel == None and after.channel != None:
-    #    await channel.send(f'{member.name} hg')
-
-
-@client.event
-async def on_ready():
-    #print(
-    #        f'{client.user.name} has connected to Discord!'
-    #    )
-    #channel = client.get_channel(CHANNEL_LOL_GENEL)
-    #response = "Alandayıs"
-    #await channel.send(response)
-
 
 client.run(TOKEN)
