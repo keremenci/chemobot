@@ -17,6 +17,10 @@ CHANNEL_VOICE_CH1 = 714920405910945832
 print("Attempting to connect to Discord...")
 client = commands.Bot(command_prefix = '$')
 
+@client.command(name='ping', help ='test bot')
+async def ping(ctx):
+    await ctx.send('pong')
+
 @client.command(name='selam', help ='Selamlar')
 async def greet(ctx):
     print(ctx.message.content)
@@ -98,19 +102,19 @@ async def spam(ctx, user: discord.User, n: int, *,message=None):
     
 @client.event
 async def on_voice_state_update(member,before,after):
-    channel = client.get_channel(CHANNEL_LOL_GENEL)
-    if before.channel == None and after.channel != None:
-        await channel.send(f'{member.name} hg')
+    #channel = client.get_channel(CHANNEL_LOL_GENEL)
+    #if before.channel == None and after.channel != None:
+    #    await channel.send(f'{member.name} hg')
 
 
 @client.event
 async def on_ready():
-    print(
-            f'{client.user.name} has connected to Discord!'
-        )
-    channel = client.get_channel(CHANNEL_LOL_GENEL)
-    response = "Alandayıs"
-    await channel.send(response)
+    #print(
+    #        f'{client.user.name} has connected to Discord!'
+    #    )
+    #channel = client.get_channel(CHANNEL_LOL_GENEL)
+    #response = "Alandayıs"
+    #await channel.send(response)
 
 
 client.run(TOKEN)
