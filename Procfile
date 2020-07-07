@@ -1,1 +1,1 @@
-worker: python Chemobot.py
+worker: python3 Chemobot.py
