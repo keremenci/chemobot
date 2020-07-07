@@ -6,9 +6,6 @@ import asyncio
 from discord.ext import commands
 
 TOKEN = os.getenv("DISCORD_TOKEN")
-sallaniyor = False
-playing = False
-
 CHANNEL_LOL_GENEL = 714920349107486911
 CHANNEL_GENERAL = 705195568389161003
 CHANNEL_VOICE_CH1 = 714920405910945832
