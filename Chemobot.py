@@ -62,8 +62,8 @@ async def kura(ctx,*argv):
             for arg in argv[1:]:
                 players.append(arg)
     random.shuffle(players)
-    takim1 = players[:5]
-    takim2 = players[5:]
+    takim1 = players[:len(players)//2]
+    takim2 = players[len(players)//2:]
     print('takımlar done')
     response = ''
     response += 'Takim 1:\n'
@@ -81,6 +81,11 @@ async def yazitura(ctx):
         await ctx.send('Yazı')
     else:
         await ctx.send('Tura')
+
+@client.command(name='sevket',help='Chate ağır yara atar')
+async def sevket(ctx):
+    area = ctx.message.channel
+    await bot.send_file(area, r"Resources\cellat.png",filename="Cellat",content="Message test")
     
 
 @client.command(name='spam',help="""Bir kullanıcıya özelden mesajı spamler.\n
