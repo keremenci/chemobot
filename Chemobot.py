@@ -54,7 +54,7 @@ async def kura(ctx,*argv):
     members = ch.members
     players = []
     for member in members:
-        players.append(member.nick)
+        players.append(member.nick or member.name)
     if len(argv) != 0:
         if (argv[0] == 'ignore'):
             for arg in argv[1:]:
