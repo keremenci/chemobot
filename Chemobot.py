@@ -3,6 +3,7 @@ import os
 import random
 import discord
 import asyncio
+import pathlib
 from discord.ext import commands
 
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -85,6 +86,7 @@ async def yazitura(ctx):
       
 @client.command(name='sevket',help='Chate ağır yara atar')
 async def sevket(ctx):
+    pathlib.Path().absolute()
     await ctx.send(file=discord.File(r'Resources\cellat.png'))
     
 
