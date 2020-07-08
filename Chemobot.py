@@ -84,6 +84,7 @@ async def yazitura(ctx):
 
       
 @client.command(name='sevket',help='Chate ağır yara atar')
+async def sevket(ctx):
     await ctx.send(file=discord.File(r'Resources\cellat.png'))
     
 
