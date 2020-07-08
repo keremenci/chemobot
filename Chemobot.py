@@ -84,9 +84,7 @@ async def yazitura(ctx):
 
       
 @client.command(name='sevket',help='Chate ağır yara atar')
-async def sevket(ctx):
-    area = ctx.message.channel
-    await client.send_file(area, r"Resources\cellat.png",filename="Cellat",content="Message test")
+    await ctx.send(file=discord.File(r'Resources\cellat.png'))
     
 
 @client.command(name='spam',help="""Bir kullanıcıya özelden mesajı spamler.\n
