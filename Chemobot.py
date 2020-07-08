@@ -82,10 +82,11 @@ async def yazitura(ctx):
     else:
         await ctx.send('Tura')
 
+      
 @client.command(name='sevket',help='Chate ağır yara atar')
 async def sevket(ctx):
     area = ctx.message.channel
-    await bot.send_file(area, r"Resources\cellat.png",filename="Cellat",content="Message test")
+    await client.send_file(area, r"Resources\cellat.png",filename="Cellat",content="Message test")
     
 
 @client.command(name='spam',help="""Bir kullanıcıya özelden mesajı spamler.\n
