@@ -1,6 +1,7 @@
  # Chemobot.py
 import os
 import random
+import youtube_dl
 import discord
 import asyncio
 import pathlib
@@ -14,6 +15,8 @@ CHANNEL_VOICE_CH1 = 714920405910945832
 
 print("Attempting to connect to Discord...")
 client = commands.Bot(command_prefix = '$')
+
+players = {}
 
 @client.command(name='ping', help ='test bot')
 async def ping(ctx):
@@ -43,6 +46,26 @@ async def ahegao(ctx):
 ⠄⠄⠄⠄⠄⠉⠻⣿⣿⣾⣦⡙⠻⣷⣾⣿⠃⠿⠋⠁⠄⠄⠄⠄⠄⢀⣠⣴
 ⣿⣶⣶⣮⣥⣒⠲⢮⣝⡿⣿⣿⡆⣿⡿⠃⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⣠"""
     await ctx.send(ahegao)
+
+@client.command(name='join',help="""Ses kanalına katılır""")
+async def join(ctx):
+    channel = ctx.message.author.voice.voice_channel
+    await client.join_voice_channel(channel)
+
+@client.command(name='leave',help="""Ses kanalından ayrılır""")
+async def leave(ctx):
+    server = ctx.message.server
+    voice_client = client.voice_client_in(server)
+    await voice_client.disconnect()
+
+@client.command(name='mertnox',help="""Babaaaa""")
+async def mertnox()
+    server = ctx.message.server
+    voice_client = client.voice_client_in(server)
+    player = await voice_client.create_ytdl_player('https://www.youtube.com/watch?v=_zLzSlmZm4c')
+    players[server.id] = player
+    player.start()
+
 
 
 @client.command(name='kura',help="""Default: CH1 kanalındaki oyuncuları kullanarak iki takım oluşturur.\n
