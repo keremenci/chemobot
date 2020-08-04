@@ -59,7 +59,7 @@ async def leave(ctx):
     await voice_client.disconnect()
 
 @client.command(name='mertnox',help="""Babaaaa""")
-async def mertnox()
+async def mertnox(ctx)
     server = ctx.message.server
     voice_client = client.voice_client_in(server)
     player = await voice_client.create_ytdl_player('https://www.youtube.com/watch?v=_zLzSlmZm4c')
