@@ -4,7 +4,6 @@ import random
 import youtube_dl
 import discord
 import asyncio
-import pathlib
 from discord.ext import commands
 
 ytdl_format_options = {
@@ -74,7 +73,7 @@ async def greet(ctx):
 @client.command(name='ahegao', help='ascii ahegao')
 async def ahegao(ctx):
     print(ctx.message.content)
-    ahegao = """⠄⣾⣿⠿⠿⠶⠿⢿⣿⣿⣿⣿⣦⣤⣄⢀⡅⢠⣾⣛⡉⠄⠄⠄⠸⢀⣿⠄
+    ahegaoascii = """⠄⣾⣿⠿⠿⠶⠿⢿⣿⣿⣿⣿⣦⣤⣄⢀⡅⢠⣾⣛⡉⠄⠄⠄⠸⢀⣿⠄
 ⢀⡋⣡⣴⣶⣶⡀⠄⠄⠙⢿⣿⣿⣿⣿⣿⣴⣿⣿⣿⢃⣤⣄⣀⣥⣿⣿⠄
 ⢸⣇⠻⣿⣿⣿⣧⣀⢀⣠⡌⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠿⣿⣿⣿⠄
 ⢸⣿⣷⣤⣤⣤⣬⣙⣛⢿⣿⣿⣿⣿⣿⣿⡿⣿⣿⡍⠄⠄⢀⣤⣄⠉⠋⣰
@@ -88,14 +87,18 @@ async def ahegao(ctx):
 ⠄⠄⠈⠛⢿⣿⣿⣿⠁⠞⢿⣿⣿⡄⢿⣿⡇⣸⣿⣿⠿⠛⠁⠄⠄⠄⠄⠄
 ⠄⠄⠄⠄⠄⠉⠻⣿⣿⣾⣦⡙⠻⣷⣾⣿⠃⠿⠋⠁⠄⠄⠄⠄⠄⢀⣠⣴
 ⣿⣶⣶⣮⣥⣒⠲⢮⣝⡿⣿⣿⡆⣿⡿⠃⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⣠"""
-    await ctx.send(ahegao)
+    await ctx.send(ahegaoascii)
 
 
 @client.command(name='mertnox', help="""Babaaaa""", pass_context=True)
-async def mertnox(self, ctx):
-    async with ctx.typing():
-        player = await YTDLSource.from_url('https://www.youtube.com/watch?v=_zLzSlmZm4c', loop=self.bot.loop)
-        ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
+async def mertnox(ctx):
+    data = ytdl.extract_info('https://www.youtube.com/watch?v=_zLzSlmZm4c', download=True)
+    channel = ctx.message.author.voice.channel
+    vc = await channel.connect()
+    vc.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(ytdl.prepare_filename(data)), 0.3),
+            after=lambda e: print('done', e))
+    await asyncio.sleep(15)
+    await vc.disconnect()
 
 
 @client.command(name='kura', help="""Default: CH1 kanalındaki oyuncuları kullanarak iki takım oluşturur.\n
@@ -109,10 +112,10 @@ async def kura(ctx, *argv):
     for member in members:
         players.append(member.nick or member.name)
     if len(argv) != 0:
-        if (argv[0] == 'ignore'):
+        if argv[0] == 'ignore':
             for arg in argv[1:]:
                 players.remove(arg)
-        if (argv[0] == 'add'):
+        if argv[0] == 'add':
             for arg in argv[1:]:
                 players.append(arg)
     random.shuffle(players)
