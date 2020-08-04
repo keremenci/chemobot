@@ -97,7 +97,7 @@ async def mertnox(ctx):
     vc = await channel.connect()
     vc.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(ytdl.prepare_filename(data)), 0.3),
             after=lambda e: print('done', e))
-    await asyncio.sleep(15)
+    await asyncio.sleep(30)
     await vc.disconnect()
 
 
