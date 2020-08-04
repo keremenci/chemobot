@@ -49,7 +49,7 @@ async def ahegao(ctx):
 
 @client.command(name='join',help="""Ses kanalına katılır""")
 async def join(ctx):
-    channel = ctx.message.author.voice.voice_channel
+    channel = ctx.message.author.voice.channel
     await client.join_voice_channel(channel)
 
 @client.command(name='leave',help="""Ses kanalından ayrılır""")
@@ -60,9 +60,10 @@ async def leave(ctx):
 
 @client.command(name='mertnox',help="""Babaaaa""")
 async def mertnox(ctx):
-    server = ctx.message.server
-    voice_client = client.voice_client_in(server)
-    player = await voice_client.create_ytdl_player('https://www.youtube.com/watch?v=_zLzSlmZm4c')
+    author = ctx.message.author
+    channel = author.voice.channel
+    vc = await channel.connect()
+    player = await vc.create_ytdl_player('https://www.youtube.com/watch?v=_zLzSlmZm4c')
     players[server.id] = player
     player.start()
 
