@@ -87,17 +87,6 @@ async def yazitura(ctx):
 @client.command(name='sevket',help='Chate ağır yara atar')
 async def sevket(ctx):
     await ctx.send("https://imgur.com/a/BRcAmWk")
-
-    """
-        images:
-        https://imgur.com/a/mrcOy6d - cellat
-    """
-
-@client.command(name='embedtest',help='null')
-async def embedtest(ctx):
-    embed = discord.Embed()
-    embed.set_image(url='https://imgur.com/a/mrcOy6d')
-    await ctx.send(embed=embed)
     
 
 @client.command(name='spam',help="""Bir kullanıcıya özelden mesajı spamler.\n
