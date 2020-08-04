@@ -7,6 +7,48 @@ import asyncio
 import pathlib
 from discord.ext import commands
 
+ytdl_format_options = {
+    'format': 'bestaudio/best',
+    'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
+    'restrictfilenames': True,
+    'noplaylist': True,
+    'nocheckcertificate': True,
+    'ignoreerrors': False,
+    'logtostderr': False,
+    'quiet': True,
+    'no_warnings': True,
+    'default_search': 'auto',
+    'source_address': '0.0.0.0' # bind to ipv4 since ipv6 addresses cause issues sometimes
+}
+
+ffmpeg_options = {
+    'options': '-vn'
+}
+
+ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
+
+
+class YTDLSource(discord.PCMVolumeTransformer):
+    def __init__(self, source, *, data, volume=0.5):
+        super().__init__(source, volume)
+
+        self.data = data
+
+        self.title = data.get('title')
+        self.url = data.get('url')
+
+    @classmethod
+    async def from_url(cls, url, *, loop=None, stream=False):
+        loop = loop or asyncio.get_event_loop()
+        data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=not stream))
+
+        if 'entries' in data:
+            # take first item from a playlist
+            data = data['entries'][0]
+
+        filename = data['url'] if stream else ytdl.prepare_filename(data)
+        return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data)
+
 TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_LOL_GENEL = 714920349107486911
 CHANNEL_GENERAL = 705195568389161003
@@ -15,8 +57,6 @@ CHANNEL_VOICE_CH1 = 714920405910945832
 
 print("Attempting to connect to Discord...")
 client = commands.Bot(command_prefix = '$')
-
-players = {}
 
 @client.command(name='ping', help ='test bot')
 async def ping(ctx):
@@ -47,25 +87,11 @@ async def ahegao(ctx):
 ⣿⣶⣶⣮⣥⣒⠲⢮⣝⡿⣿⣿⡆⣿⡿⠃⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⣠"""
     await ctx.send(ahegao)
 
-@client.command(name='join',help="""Ses kanalına katılır""")
-async def join(ctx):
-    channel = ctx.message.author.voice.channel
-    await client.join_voice_channel(channel)
-
-@client.command(name='leave',help="""Ses kanalından ayrılır""")
-async def leave(ctx):
-    server = ctx.message.server
-    voice_client = client.voice_client_in(server)
-    await voice_client.disconnect()
-
 @client.command(name='mertnox',help="""Babaaaa""")
-async def mertnox(ctx):
-    author = ctx.message.author
-    channel = author.voice.channel
-    vc = await channel.connect()
-    player = await vc.create_ytdl_player('https://www.youtube.com/watch?v=_zLzSlmZm4c')
-    players[server.id] = player
-    player.start()
+async def mertnox(self, ctx):
+    async with ctx.typing():
+        player = await YTDLSource.from_url('https://www.youtube.com/watch?v=_zLzSlmZm4c', loop=self.bot.loop)
+        ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
 
 
 
