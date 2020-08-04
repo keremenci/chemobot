@@ -1,4 +1,4 @@
- # Chemobot.py
+# Chemobot.py
 import os
 import random
 import youtube_dl
@@ -18,7 +18,7 @@ ytdl_format_options = {
     'quiet': True,
     'no_warnings': True,
     'default_search': 'auto',
-    'source_address': '0.0.0.0' # bind to ipv4 since ipv6 addresses cause issues sometimes
+    'source_address': '0.0.0.0'  # bind to ipv4 since ipv6 addresses cause issues sometimes
 }
 
 ffmpeg_options = {
@@ -49,26 +49,29 @@ class YTDLSource(discord.PCMVolumeTransformer):
         filename = data['url'] if stream else ytdl.prepare_filename(data)
         return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data)
 
+
 TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_LOL_GENEL = 714920349107486911
 CHANNEL_GENERAL = 705195568389161003
 CHANNEL_VOICE_CH1 = 714920405910945832
 
-
 print("Attempting to connect to Discord...")
-client = commands.Bot(command_prefix = '$')
+client = commands.Bot(command_prefix='$')
 
-@client.command(name='ping', help ='test bot')
+
+@client.command(name='ping', help='test bot')
 async def ping(ctx):
     await ctx.send('pong')
 
-@client.command(name='selam', help ='Selamlar')
+
+@client.command(name='selam', help='Selamlar')
 async def greet(ctx):
     print(ctx.message.content)
     response = "MERHABALAR AQ"
     await ctx.send(response)
-    
-@client.command(name='ahegao', help = 'ascii ahegao')
+
+
+@client.command(name='ahegao', help='ascii ahegao')
 async def ahegao(ctx):
     print(ctx.message.content)
     ahegao = """⠄⣾⣿⠿⠿⠶⠿⢿⣿⣿⣿⣿⣦⣤⣄⢀⡅⢠⣾⣛⡉⠄⠄⠄⠸⢀⣿⠄
@@ -87,19 +90,19 @@ async def ahegao(ctx):
 ⣿⣶⣶⣮⣥⣒⠲⢮⣝⡿⣿⣿⡆⣿⡿⠃⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⣠"""
     await ctx.send(ahegao)
 
-@client.command(name='mertnox',help="""Babaaaa""")
+
+@client.command(name='mertnox', help="""Babaaaa""", pass_context=True)
 async def mertnox(self, ctx):
     async with ctx.typing():
         player = await YTDLSource.from_url('https://www.youtube.com/watch?v=_zLzSlmZm4c', loop=self.bot.loop)
         ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
 
 
-
-@client.command(name='kura',help="""Default: CH1 kanalındaki oyuncuları kullanarak iki takım oluşturur.\n
+@client.command(name='kura', help="""Default: CH1 kanalındaki oyuncuları kullanarak iki takım oluşturur.\n
 2. Parametre olarak verilen oyuncuları ignorelayabilir veya oyuncu ekleyebilir.\n
 Örnek: $kura add visne feseka
 Örnek 2: $kura ignore @mention @mention2""")
-async def kura(ctx,*argv):
+async def kura(ctx, *argv):
     ch = client.get_channel(CHANNEL_VOICE_CH1)
     members = ch.members
     players = []
@@ -113,8 +116,8 @@ async def kura(ctx,*argv):
             for arg in argv[1:]:
                 players.append(arg)
     random.shuffle(players)
-    takim1 = players[:len(players)//2]
-    takim2 = players[len(players)//2:]
+    takim1 = players[:len(players) // 2]
+    takim2 = players[len(players) // 2:]
     print('takımlar done')
     response = ''
     response += 'Takim 1:\n'
@@ -125,25 +128,26 @@ async def kura(ctx,*argv):
         response = response + str(player) + '\n'
     await ctx.send(response)
 
-@client.command(name='yazitura',help='Yazı tura. Alican ok nightmare')
+
+@client.command(name='yazitura', help='Yazı tura. Alican ok nightmare')
 async def yazitura(ctx):
-    coin = random.randint(0,1)
+    coin = random.randint(0, 1)
     if coin == 0:
         await ctx.send('Yazı')
     else:
         await ctx.send('Tura')
 
-      
-@client.command(name='sevket',help='Chate ağır yara atar')
+
+@client.command(name='sevket', help='Chate ağır yara atar')
 async def sevket(ctx):
     await ctx.send("https://imgur.com/a/BRcAmWk")
-    
 
-@client.command(name='spam',help="""Bir kullanıcıya özelden mesajı spamler.\n
+
+@client.command(name='spam', help="""Bir kullanıcıya özelden mesajı spamler.\n
 Boş bırakılırsa Dc\'ye çağırılıyorsun mesajını spamler\n
 Örnek : $spam @feseka 5 sa as\n
 Örnek2 :$spam @feseka 7 """)
-async def spam(ctx, user: discord.User, n: int, *,message=None):
+async def spam(ctx, user: discord.User, n: int, *, message=None):
     if n > 10:
         await ctx.send('Abartma sen de')
     print(ctx.message.content)
@@ -152,5 +156,6 @@ async def spam(ctx, user: discord.User, n: int, *,message=None):
     for i in range(n):
         await user.send(message)
     await ctx.message.delete()
+
 
 client.run(TOKEN)
