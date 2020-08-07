@@ -89,13 +89,18 @@ async def ahegao(ctx):
 ⣿⣶⣶⣮⣥⣒⠲⢮⣝⡿⣿⣿⡆⣿⡿⠃⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⣠"""
     await ctx.send(ahegaoascii)
 
+    FFMPEG_OPTIONS = {
+        'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
+        'options': '-vn',
+    }
+
 
 @client.command(name='mertnox', help="""Babaaaa""", pass_context=True)
 async def mertnox(ctx):
-    data = ytdl.extract_info('https://www.youtube.com/watch?v=_zLzSlmZm4c', download=False)
+    data = ytdl.extract_info('https://www.youtube.com/watch?v=_zLzSlmZm4c', download=True)
     channel = ctx.message.author.voice.channel
     vc = await channel.connect()
-    vc.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(ytdl.prepare_filename(data)), 1.0),
+    vc.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(ytdl.prepare_filename(data),**FFMPEG_OPTIONS),volume=1.0),
             after=lambda e: print('mertnox done', e))
     await asyncio.sleep(30)
     await vc.disconnect()
