@@ -92,11 +92,11 @@ async def ahegao(ctx):
 
 @client.command(name='mertnox', help="""Babaaaa""", pass_context=True)
 async def mertnox(ctx):
-    data = ytdl.extract_info('https://www.youtube.com/watch?v=_zLzSlmZm4c', download=True)
+    data = ytdl.extract_info('https://www.youtube.com/watch?v=_zLzSlmZm4c', download=False)
     channel = ctx.message.author.voice.channel
     vc = await channel.connect()
-    vc.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(ytdl.prepare_filename(data)), 0.3),
-            after=lambda e: print('done', e))
+    vc.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(ytdl.prepare_filename(data)), 1.0),
+            after=lambda e: print('mertnox done', e))
     await asyncio.sleep(30)
     await vc.disconnect()
 
